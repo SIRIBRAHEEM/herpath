@@ -29,8 +29,10 @@ Opportunity track.
 ## Tech
 
 - React and Vite
-- Plain CSS, designed from scratch (warm cream, berry and coral, Fraunces
-  headings and Nunito Sans body text, self-hosted fonts)
+- Tailwind CSS v4 with a small design system of owned component patterns
+  (buttons, badges, chips, cards, inputs, progress bars, modal) in
+  `src/index.css`: editorial magazine look, blush pink and plum, Playfair
+  Display headlines with Inter body text, self-hosted fonts
 - All matching, filtering, deadline and checklist maths written as pure
   functions in `src/lib/logic.js`, covered by unit tests
 - localStorage for persistence. No backend, no API keys.
@@ -62,8 +64,9 @@ node scripts/e2e.mjs   # Playwright end to end checks + screenshots in docs/
 - `src/data/opportunities.js` - the sample catalogue of 18 programmes
 - `src/App.jsx` - the three screens (Discover, Find my match, My list) and
   the detail view
-- `src/index.css` - the design system
-- `public/fonts/` - self-hosted Fraunces and Nunito Sans (woff2)
+- `src/index.css` - the Tailwind design system (theme tokens + component
+  classes)
+- `public/fonts/` - self-hosted Playfair Display and Inter (woff2)
 - `scripts/e2e.mjs` - Playwright checks that also capture the screenshots
   in `docs/`
 
@@ -76,6 +79,6 @@ would be updated from the programmes' own announcements.
 
 ## Credits
 
-- React and Vite (open source)
-- Fraunces and Nunito Sans fonts from Google Fonts (OFL licence),
+- React, Vite and Tailwind CSS (open source)
+- Playfair Display and Inter fonts from Google Fonts (OFL licence),
   self-hosted in the repo

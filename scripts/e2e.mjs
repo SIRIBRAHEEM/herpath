@@ -106,6 +106,9 @@ try {
   await page.waitForTimeout(200);
   const progressText = await page.locator('.saved-card .progress-row').innerText();
   check(`checklist ticks (saw "${progressText.trim()}")`, progressText.includes('1 of'));
+  // Unstick the header so full-page captures do not stamp it mid-page.
+  await page.addStyleTag({ content: 'header { position: static !important; }' });
+  await page.evaluate(() => window.scrollTo(0, 0));
   await page.screenshot({ path: 'docs/3-my-list.png', fullPage: true });
 
   console.log('Persistence across reload');
@@ -126,6 +129,7 @@ try {
   check(`matches ranked with scores (saw ${matchCount})`, matchCount >= 3);
   const firstPercent = await page.locator('.match-percent').first().innerText();
   check(`top match has a percent (saw ${firstPercent})`, /^\d+%$/.test(firstPercent.trim()));
+  await page.evaluate(() => window.scrollTo(0, 0));
   await page.screenshot({ path: 'docs/5-matches.png', fullPage: true });
 
   console.log('Mobile view');

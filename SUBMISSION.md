@@ -39,7 +39,7 @@ Third, My list. She saves the opportunities she likes, and each saved item comes
 ## What technologies did you use?
 
 - React and Vite for the app
-- Plain CSS written from scratch: warm cream background, berry and coral colours, Fraunces headings with Nunito Sans body text, self-hosted fonts so it works offline
+- Tailwind CSS with a small design system of owned component patterns (buttons, badges, chips, cards, inputs, progress bars, modal): editorial magazine look, blush pink and plum, Playfair Display headings with Inter body text, self-hosted fonts so it works offline
 - localStorage for saving her list, checklists and quiz answers on the device
 - The core logic (deadline countdowns, urgency bands, search, filters, sorting, match scoring, checklist progress) is written as pure functions in one file and covered by 15 unit tests, plus Playwright end to end checks on every screen
 
@@ -73,8 +73,8 @@ Open the local address Vite prints. The app includes sample listings, so every s
 
 ## Credits and acknowledgements
 
-- React and Vite (open source)
-- Fraunces and Nunito Sans fonts from Google Fonts (OFL licence), self-hosted in the repo
+- React, Vite and Tailwind CSS (open source)
+- Playfair Display and Inter fonts from Google Fonts (OFL licence), self-hosted in the repo
 - The 18 programmes listed are real, well known opportunities; dates and details in this demo are samples, and the app tells users to confirm on the official site before applying
 - AI tools used: an AI coding assistant helped me write and test the code. The idea, design and final product are mine.
 - All work on this project was done during the InnovateHER hacking period (from 13 Nov 2026).

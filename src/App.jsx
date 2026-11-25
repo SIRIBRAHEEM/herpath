@@ -52,16 +52,20 @@ function loadState() {
 
 function LogoMark() {
   return (
-    <svg className="logo-mark" viewBox="0 0 64 64" aria-hidden="true">
-      <rect width="64" height="64" rx="16" fill="#8C2D5F" />
-      <path
-        d="M14 46 C 24 30, 30 44, 38 30 C 43 21, 48 22, 50 16"
-        fill="none"
-        stroke="#F2A93B"
-        strokeWidth="5"
-        strokeLinecap="round"
-      />
-      <circle cx="50" cy="14" r="5" fill="#FFF8F0" />
+    <svg className="size-11 shrink-0" viewBox="0 0 64 64" aria-hidden="true">
+      <rect width="64" height="64" rx="14" fill="#5E2B4F" />
+      <text
+        x="32"
+        y="45"
+        textAnchor="middle"
+        fontFamily="'Playfair Display', Georgia, serif"
+        fontWeight="800"
+        fontSize="36"
+        fill="#FDF6F8"
+      >
+        H
+      </text>
+      <circle cx="50" cy="14" r="4.5" fill="#D1658F" />
     </svg>
   );
 }
@@ -122,7 +126,7 @@ function DeadlineBadge({ deadline }) {
 function OpportunityCard({ opp, saved, onToggleSave, onOpen, match }) {
   return (
     <article className="card">
-      <div className="card-top">
+      <div className="flex items-center justify-between gap-2">
         <span className={`type-badge ${TYPE_CLASS[opp.type] || ''}`}>{opp.type}</span>
         <button
           type="button"
@@ -171,7 +175,7 @@ function OpportunityCard({ opp, saved, onToggleSave, onOpen, match }) {
       <div className="card-foot">
         <DeadlineBadge deadline={opp.deadline} />
         <button type="button" className="details-link" onClick={() => onOpen(opp)}>
-          See details <IconArrow />
+          Read more <IconArrow />
         </button>
       </div>
     </article>
@@ -204,13 +208,15 @@ function DetailModal({ opp, saved, checklist, onToggleSave, onToggleDoc, onClose
         <span className={`type-badge ${TYPE_CLASS[opp.type] || ''}`}>{opp.type}</span>
         <h2>{opp.name}</h2>
         <p className="card-org">by {opp.org}</p>
-        <DeadlineBadge deadline={opp.deadline} />
+        <div className="mt-4">
+          <DeadlineBadge deadline={opp.deadline} />
+        </div>
 
         <h3>What you get</h3>
         <p>{opp.coverage}</p>
 
         <h3>About this opportunity</h3>
-        <p>{opp.description}</p>
+        <p className="drop-cap">{opp.description}</p>
 
         <h3>Who it is for</h3>
         <p>{opp.whoFor}</p>
@@ -225,13 +231,13 @@ function DetailModal({ opp, saved, checklist, onToggleSave, onToggleDoc, onClose
         <h3>Documents you will need</h3>
         {saved ? (
           <>
-            <div className="progress-row">
+            <div className="progress-row mt-3">
               <div className="progress-bar" aria-hidden="true">
                 <div className="progress-fill" style={{ width: `${progress.percent}%` }} />
               </div>
               <span>{progress.done} of {progress.total} ready</span>
             </div>
-            <ul className="doc-list">
+            <ul className="doc-list mt-2">
               {checklist.map((item) => (
                 <li key={item.id}>
                   <label className={item.done ? 'doc-done' : ''}>
@@ -252,7 +258,7 @@ function DetailModal({ opp, saved, checklist, onToggleSave, onToggleDoc, onClose
           </>
         ) : (
           <>
-            <ul className="doc-list doc-preview">
+            <ul className="doc-list doc-preview mt-2">
               {opp.documents.map((doc) => (
                 <li key={doc}>{doc}</li>
               ))}
@@ -378,39 +384,40 @@ export default function App() {
     0,
   );
 
+  const navBtn = (active) =>
+    `nav-btn relative px-1 py-2 text-[13px] font-bold uppercase tracking-[0.16em] transition-colors cursor-pointer bg-transparent border-0 ${
+      active ? 'text-plum-950 after:absolute after:inset-x-0 after:bottom-0 after:h-[3px] after:bg-rose-600' : 'text-plum-500 hover:text-plum-800'
+    }`;
+
   return (
-    <div className="app">
-      <header className="site-header">
-        <div className="header-inner">
-          <div className="brand">
+    <div className="min-h-screen">
+      <header className="sticky top-0 z-40 border-b border-line bg-blush-50/92 backdrop-blur-md">
+        <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-x-6 gap-y-2 px-5 py-3">
+          <div className="flex items-center gap-3">
             <LogoMark />
             <div>
-              <span className="brand-name">HerPath</span>
-              <span className="brand-tag">Your next step starts here</span>
+              <span className="block font-display text-[1.6rem] font-extrabold leading-none tracking-tight text-plum-950">
+                HerPath
+              </span>
+              <span className="mt-0.5 block text-[11px] font-semibold uppercase tracking-[0.22em] text-rose-700">
+                Your next step starts here
+              </span>
             </div>
           </div>
-          <nav className="main-nav" aria-label="Main">
-            <button
-              type="button"
-              className={view === 'discover' ? 'nav-btn is-active' : 'nav-btn'}
-              onClick={() => setView('discover')}
-            >
+          <nav className="flex items-center gap-5" aria-label="Main">
+            <button type="button" className={navBtn(view === 'discover')} onClick={() => setView('discover')}>
               Discover
             </button>
-            <button
-              type="button"
-              className={view === 'match' ? 'nav-btn is-active' : 'nav-btn'}
-              onClick={() => setView('match')}
-            >
+            <button type="button" className={navBtn(view === 'match')} onClick={() => setView('match')}>
               Find my match
             </button>
-            <button
-              type="button"
-              className={view === 'list' ? 'nav-btn is-active' : 'nav-btn'}
-              onClick={() => setView('list')}
-            >
+            <button type="button" className={navBtn(view === 'list')} onClick={() => setView('list')}>
               My list
-              {state.saved.length > 0 && <span className="nav-count">{state.saved.length}</span>}
+              {state.saved.length > 0 && (
+                <span className="nav-count ml-1.5 inline-flex min-w-5 items-center justify-center rounded-full bg-rose-600 px-1 text-[11px] font-bold text-white">
+                  {state.saved.length}
+                </span>
+              )}
             </button>
           </nav>
         </div>
@@ -418,54 +425,76 @@ export default function App() {
 
       {view === 'discover' && (
         <main>
-          <section className="hero">
-            <div className="hero-inner">
-              <p className="hero-kicker">Scholarships, internships, mentors and more, in one friendly place</p>
-              <h1>
-                Your future is <span className="hero-accent">calling</span>. Let us find your door.
+          <section className="hero border-b border-line bg-gradient-to-b from-blush-100 to-blush-50">
+            <div className="mx-auto max-w-4xl px-5 pb-14 pt-12 text-center">
+              <div className="flex items-center justify-center gap-4">
+                <span className="hidden h-px flex-1 bg-plum-300 sm:block" aria-hidden="true" />
+                <p className="kicker">Education and Opportunity</p>
+                <span className="hidden h-px flex-1 bg-plum-300 sm:block" aria-hidden="true" />
+              </div>
+              <h1 className="mx-auto mt-6 max-w-3xl text-5xl font-extrabold leading-[1.05] tracking-tight sm:text-6xl">
+                Your future is <em className="font-semibold italic text-rose-600">calling</em>.
+                Let us find your door.
               </h1>
-              <p className="hero-sub">
-                HerPath gathers real opportunities for girls and women, matches them to your level,
-                field and region, and helps you get every document ready before the deadline.
+              <p className="mx-auto mt-6 max-w-2xl text-left text-base leading-relaxed text-plum-900/85 sm:text-lg">
+                <span className="drop-cap">
+                  HerPath gathers real scholarships, internships, mentorships and fellowships for
+                  girls and women, matches them to your level, field and region, and helps you
+                  get every document ready before the deadline.
+                </span>
               </p>
-              <div className="hero-stats">
-                <div className="stat">
-                  <strong>{OPPORTUNITIES.length}</strong>
-                  <span>opportunities listed</span>
+
+              <div className="hero-stats mx-auto mt-10 grid max-w-2xl grid-cols-3 divide-x divide-line border-y border-line py-5">
+                <div className="px-3">
+                  <strong className="block font-display text-3xl font-extrabold text-plum-950 sm:text-4xl">
+                    {OPPORTUNITIES.length}
+                  </strong>
+                  <span className="mt-1 block text-[11px] font-semibold uppercase tracking-[0.14em] text-plum-500">
+                    opportunities listed
+                  </span>
                 </div>
-                <div className="stat">
-                  <strong>{closingSoon}</strong>
-                  <span>closing in the next 60 days</span>
+                <div className="px-3">
+                  <strong className="block font-display text-3xl font-extrabold text-plum-950 sm:text-4xl">
+                    {closingSoon}
+                  </strong>
+                  <span className="mt-1 block text-[11px] font-semibold uppercase tracking-[0.14em] text-plum-500">
+                    closing in 60 days
+                  </span>
                 </div>
-                <div className="stat">
-                  <strong>{TYPES.length}</strong>
-                  <span>kinds of support</span>
+                <div className="px-3">
+                  <strong className="block font-display text-3xl font-extrabold text-plum-950 sm:text-4xl">
+                    {TYPES.length}
+                  </strong>
+                  <span className="mt-1 block text-[11px] font-semibold uppercase tracking-[0.14em] text-plum-500">
+                    kinds of support
+                  </span>
                 </div>
               </div>
-              <button type="button" className="btn btn-primary btn-big" onClick={() => setView('match')}>
+
+              <button type="button" className="btn btn-primary btn-big mt-9" onClick={() => setView('match')}>
                 Find my match <IconArrow />
               </button>
             </div>
-            <svg className="hero-wave" viewBox="0 0 1440 90" preserveAspectRatio="none" aria-hidden="true">
-              <path d="M0,50 C240,90 480,10 720,45 C960,80 1200,20 1440,55 L1440,90 L0,90 Z" fill="#FFF8F0" />
-            </svg>
           </section>
 
-          <section className="content">
-            <div className="search-row">
-              <label className="search-box">
-                <IconSearch />
+          <section className="mx-auto max-w-6xl px-5 py-10">
+            <div className="flex flex-wrap items-end gap-4">
+              <label className="search-box relative min-w-64 flex-1">
+                <span className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-plum-400">
+                  <IconSearch />
+                </span>
                 <input
                   type="search"
+                  className="search-input pl-10"
                   placeholder="Search scholarships, mentors, internships..."
                   value={filters.query}
                   onChange={(e) => setFilters({ ...filters, query: e.target.value })}
                   aria-label="Search opportunities"
                 />
               </label>
-              <label className="sort-box">
+              <label className="field-label">
                 Sort by
-                <select value={sortMode} onChange={(e) => setSortMode(e.target.value)}>
+                <select className="select-input" value={sortMode} onChange={(e) => setSortMode(e.target.value)}>
                   <option value="deadline">Deadline soonest</option>
                   <option value="newest">Newest listed</option>
                   <option value="name">Name A to Z</option>
@@ -473,7 +502,7 @@ export default function App() {
               </label>
             </div>
 
-            <div className="chip-row" role="group" aria-label="Filter by type">
+            <div className="chip-row mt-5 flex flex-wrap gap-2" role="group" aria-label="Filter by type">
               <button
                 type="button"
                 className={filters.type === 'all' ? 'chip is-active' : 'chip'}
@@ -493,10 +522,11 @@ export default function App() {
               ))}
             </div>
 
-            <div className="select-row">
-              <label>
+            <div className="select-row mt-5 grid grid-cols-1 gap-4 sm:grid-cols-3">
+              <label className="field-label">
                 I am in
                 <select
+                  className="select-input"
                   value={filters.level}
                   onChange={(e) => setFilters({ ...filters, level: e.target.value })}
                 >
@@ -506,9 +536,10 @@ export default function App() {
                   ))}
                 </select>
               </label>
-              <label>
+              <label className="field-label">
                 I live in
                 <select
+                  className="select-input"
                   value={filters.region}
                   onChange={(e) => setFilters({ ...filters, region: e.target.value })}
                 >
@@ -518,9 +549,10 @@ export default function App() {
                   ))}
                 </select>
               </label>
-              <label>
+              <label className="field-label">
                 My field is
                 <select
+                  className="select-input"
                   value={filters.field}
                   onChange={(e) => setFilters({ ...filters, field: e.target.value })}
                 >
@@ -532,12 +564,12 @@ export default function App() {
               </label>
             </div>
 
-            <p className="result-count" role="status">
+            <p className="mt-7 border-b border-line pb-3 text-sm font-medium text-plum-500" role="status">
               Showing {visible.length} of {OPPORTUNITIES.length} opportunities
             </p>
 
             {visible.length === 0 ? (
-              <div className="empty-box">
+              <div className="empty-box mt-8">
                 <h2>Nothing matches that search yet</h2>
                 <p>Try a shorter search word, or clear the filters to see everything again.</p>
                 <button type="button" className="btn btn-primary" onClick={resetFilters}>
@@ -545,7 +577,7 @@ export default function App() {
                 </button>
               </div>
             ) : (
-              <div className="card-grid">
+              <div className="card-grid mt-8 grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
                 {visible.map((opp) => (
                   <OpportunityCard
                     key={opp.id}
@@ -562,35 +594,36 @@ export default function App() {
       )}
 
       {view === 'match' && (
-        <main className="content">
-          <section className="quiz-card">
-            <h1 className="page-title">Tell us about you</h1>
-            <p className="page-sub">
+        <main className="mx-auto max-w-6xl px-5 py-10">
+          <section className="quiz-card rounded-2xl border border-line bg-paper p-6 shadow-card sm:p-9">
+            <p className="kicker">The matchmaker</p>
+            <h1 className="mt-3 text-4xl font-extrabold">Tell us about you</h1>
+            <p className="mt-3 max-w-2xl text-[15px] leading-relaxed text-plum-900/80">
               Four quick answers, and HerPath will rank every opportunity by how well it fits you,
               with the reasons spelled out.
             </p>
-            <div className="quiz-grid">
-              <label>
+            <div className="mt-7 grid grid-cols-1 gap-4 border-t border-line pt-7 sm:grid-cols-3">
+              <label className="field-label">
                 Your education level
-                <select value={quiz.level} onChange={(e) => setQuiz({ ...quiz, level: e.target.value })}>
+                <select className="select-input" value={quiz.level} onChange={(e) => setQuiz({ ...quiz, level: e.target.value })}>
                   {LEVELS.map((l) => (
                     <option key={l.value} value={l.value}>{l.label}</option>
                   ))}
                   <option value="any">Not sure yet</option>
                 </select>
               </label>
-              <label>
+              <label className="field-label">
                 Your field of study
-                <select value={quiz.field} onChange={(e) => setQuiz({ ...quiz, field: e.target.value })}>
+                <select className="select-input" value={quiz.field} onChange={(e) => setQuiz({ ...quiz, field: e.target.value })}>
                   {FIELDS.map((f) => (
                     <option key={f.value} value={f.value}>{f.label}</option>
                   ))}
                   <option value="any">Still exploring</option>
                 </select>
               </label>
-              <label>
+              <label className="field-label">
                 Where you live
-                <select value={quiz.region} onChange={(e) => setQuiz({ ...quiz, region: e.target.value })}>
+                <select className="select-input" value={quiz.region} onChange={(e) => setQuiz({ ...quiz, region: e.target.value })}>
                   {REGIONS.map((r) => (
                     <option key={r} value={r}>{r}</option>
                   ))}
@@ -598,9 +631,11 @@ export default function App() {
                 </select>
               </label>
             </div>
-            <fieldset className="interest-field">
-              <legend>What are you hoping for? Pick as many as you like.</legend>
-              <div className="chip-row">
+            <fieldset className="mt-7">
+              <legend className="text-sm font-semibold text-plum-800">
+                What are you hoping for? Pick as many as you like.
+              </legend>
+              <div className="chip-row mt-3 flex flex-wrap gap-2">
                 {TYPES.map((type) => (
                   <button
                     key={type}
@@ -614,19 +649,21 @@ export default function App() {
                 ))}
               </div>
             </fieldset>
-            <button type="button" className="btn btn-primary btn-big" onClick={runQuiz}>
+            <button type="button" className="btn btn-primary btn-big mt-8" onClick={runQuiz}>
               Show my matches <IconArrow />
             </button>
           </section>
 
           {quizDone && (
-            <section aria-live="polite">
-              <h2 className="section-title">
-                Your best matches
-                <span className="section-count">{topMatches.length} strong fits</span>
-              </h2>
+            <section className="mt-12" aria-live="polite">
+              <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1 border-b-2 border-plum-700 pb-3">
+                <h2 className="text-3xl font-extrabold">Your best matches</h2>
+                <span className="text-sm font-semibold uppercase tracking-[0.14em] text-rose-700">
+                  {topMatches.length} strong fits
+                </span>
+              </div>
               {topMatches.length === 0 ? (
-                <div className="empty-box">
+                <div className="empty-box mt-8">
                   <h2>No strong matches yet</h2>
                   <p>
                     Try picking more kinds of support above, or browse everything on the Discover
@@ -634,7 +671,7 @@ export default function App() {
                   </p>
                 </div>
               ) : (
-                <div className="card-grid">
+                <div className="card-grid mt-8 grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
                   {topMatches.map((m) => (
                     <OpportunityCard
                       key={m.opp.id}
@@ -653,15 +690,16 @@ export default function App() {
       )}
 
       {view === 'list' && (
-        <main className="content">
-          <h1 className="page-title">My list</h1>
-          <p className="page-sub">
+        <main className="mx-auto max-w-6xl px-5 py-10">
+          <p className="kicker">Your applications</p>
+          <h1 className="mt-3 text-4xl font-extrabold">My list</h1>
+          <p className="mt-3 max-w-2xl text-[15px] leading-relaxed text-plum-900/80">
             Everything you saved, with a document checklist for each one. Tick things off as you
             get them ready, and watch the bars fill up.
           </p>
 
           {savedOpps.length === 0 ? (
-            <div className="empty-box">
+            <div className="empty-box mt-10">
               <h2>Your list is empty for now</h2>
               <p>
                 When you find an opportunity you like, tap Save and it will wait for you here with
@@ -673,16 +711,24 @@ export default function App() {
             </div>
           ) : (
             <>
-              <div className="list-summary">
-                <div className="stat">
-                  <strong>{savedOpps.length}</strong>
-                  <span>saved {savedOpps.length === 1 ? 'opportunity' : 'opportunities'}</span>
+              <div className="mt-8 flex flex-wrap items-center gap-x-10 gap-y-4 rounded-2xl border border-line bg-paper px-6 py-5 shadow-card">
+                <div>
+                  <strong className="block font-display text-3xl font-extrabold text-plum-950">
+                    {savedOpps.length}
+                  </strong>
+                  <span className="text-[11px] font-semibold uppercase tracking-[0.14em] text-plum-500">
+                    saved {savedOpps.length === 1 ? 'opportunity' : 'opportunities'}
+                  </span>
                 </div>
-                <div className="stat">
-                  <strong>{totalDocsReady} / {totalDocs}</strong>
-                  <span>documents ready</span>
+                <div>
+                  <strong className="block font-display text-3xl font-extrabold text-plum-950">
+                    {totalDocsReady} / {totalDocs}
+                  </strong>
+                  <span className="text-[11px] font-semibold uppercase tracking-[0.14em] text-plum-500">
+                    documents ready
+                  </span>
                 </div>
-                <div className="progress-bar progress-wide" aria-hidden="true">
+                <div className="progress-bar progress-wide min-w-48 flex-1" aria-hidden="true">
                   <div
                     className="progress-fill"
                     style={{ width: `${totalDocs === 0 ? 0 : Math.round((totalDocsReady / totalDocs) * 100)}%` }}
@@ -690,16 +736,16 @@ export default function App() {
                 </div>
               </div>
 
-              <div className="saved-list">
+              <div className="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-2">
                 {savedOpps.map((opp) => {
                   const checklist = checklistFor(opp);
                   const progress = checklistProgress(checklist);
                   return (
-                    <article key={opp.id} className="saved-card">
-                      <div className="saved-head">
+                    <article key={opp.id} className="saved-card card">
+                      <div className="flex items-start justify-between gap-3">
                         <div>
                           <span className={`type-badge ${TYPE_CLASS[opp.type] || ''}`}>{opp.type}</span>
-                          <h3>{opp.name}</h3>
+                          <h3 className="mt-2 font-display text-2xl font-bold leading-snug">{opp.name}</h3>
                           <p className="card-org">by {opp.org}</p>
                         </div>
                         <DeadlineBadge deadline={opp.deadline} />
@@ -728,7 +774,7 @@ export default function App() {
                       {progress.percent === 100 && (
                         <p className="ready-note">All documents ready. Time to apply. We are rooting for you!</p>
                       )}
-                      <div className="saved-actions">
+                      <div className="mt-auto flex gap-2 border-t border-line pt-4">
                         <button type="button" className="btn btn-ghost" onClick={() => setOpenOpp(opp)}>
                           See details
                         </button>
@@ -745,18 +791,20 @@ export default function App() {
         </main>
       )}
 
-      <footer className="site-footer">
-        <div className="footer-inner">
-          <div className="brand">
+      <footer className="mt-16 border-t border-line bg-blush-100/60">
+        <div className="rule-double mx-auto max-w-6xl px-5 py-10">
+          <div className="flex items-center gap-3">
             <LogoMark />
-            <span className="brand-name">HerPath</span>
+            <span className="font-display text-2xl font-extrabold text-plum-950">HerPath</span>
           </div>
-          <p>
+          <p className="mt-4 max-w-2xl text-sm leading-relaxed text-plum-900/75">
             Built for the InnovateHER Hackathon, Education and Opportunity track. Listings are
             sample data for this demo, so always confirm details on the official site before you
             apply. Your saved list and checklists stay on your own device.
           </p>
-          <p className="footer-cheer">You belong in every room you dream of. Keep going.</p>
+          <p className="mt-4 font-display text-lg italic text-plum-700">
+            You belong in every room you dream of. Keep going.
+          </p>
         </div>
       </footer>
 
